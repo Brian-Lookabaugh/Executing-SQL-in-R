@@ -1,0 +1,28 @@
+---
+title: "Executing SQL in R"
+author: "Brian Lookabaugh"
+output: html_document
+---
+
+## Load Packages
+
+```{r}
+library(dplyr) ## Data Manipulation in R
+library(sqldf) ## Running SQL Queries in R
+library(dbplyr) ## Translating dplyr Syntax to SQL Syntax
+library(DBI) ## Communication Between R and RDBMS
+```
+
+## Setting Up Databases
+
+## Running a SQL Query in R
+
+## Running a SQL Chunk in RMarkdown/Quarto
+
+## Running a SQL Query With dplyr Syntax
+
+## Translating dplyr Syntax to SQL Syntax
+
+## Saving Queries in R
+
+## A Tangible Example
