@@ -7,12 +7,16 @@ A promising push in the world of data analytics and data science is the push to 
 
 To begin, we will load the packages that will be utilized in this blog.
 
-```{r warning=FALSE}
-library(dplyr) ## Data Manipulation in R
-library(sqldf) ## Running SQL Queries in R
-library(dbplyr) ## Translating dplyr Syntax to SQL Syntax
-library(DBI) ## Connecting to a Database
-library(odbc) ## Connecting to a Database
+```{r warning=FALSE, message=FALSE}
+pacman::p_load(
+  "dplyr", ## Data Manipulation in R
+  "sqldf", ## Running SQL Queries in R
+  "dbplyr", ## Translating dplyr Syntax to SQL Syntax
+  "DBI", ## Connecting to a Database
+  "odbc", ## Connecting to a Database
+  "tidyqyery", ## Translating SQL Syntax to dplyr Syntax
+  install = FALSE
+)
 ```
 
 ### Setting Up Databases
@@ -63,11 +67,25 @@ query_1 <- dbGetQuery(con,
 tibble(query_1)
 ```
 
+In contrast, if you wanted to execute a query on a data frame object instead of pulling from a database, you can use `sqldf`.
+
+```{r}
+query_2 <- sqldf(
+  'SELECT ROUND(AVG(mpg)) as avg_mpg, cyl
+   FROM mtcars
+   WHERE am = 1
+   GROUP BY cyl
+   ORDER BY avg_mpg DESC;'
+)
+
+tibble(query_2)
+```
+
 ### Running a SQL Chunk in RMarkdown/Quarto
 
 We can conveniently execute a SQL query in R without relying on a specific command like `dbGetQuery`. Using RMarkdown or Quarto, we can specify a SQL code chunk. Within the code chunk, you will need to specify the connection (`con` in our case) and, optionally, the object that the results of the query will be stored in. In the output below, you would begin the code chunk with `{sql, connection = con, output.var = "query_2"}`.
 
-```{sql, connection = con, output.var = "query_2"}
+```{sql, connection = con, output.var = "query_3"}
 SELECT
   ROUND(AVG(mpg)) AS avg_mpg,
   cyl
@@ -78,7 +96,7 @@ ORDER BY avg_mpg DESC;
 ```
 
 ```{r}
-tibble(query_2)
+tibble(query_3)
 ```
 
 Note that if you are going to be using SQL chunks frequently, it is worth specifying the default connection for SQL chunks as demonstrated below.
@@ -87,18 +105,32 @@ Note that if you are going to be using SQL chunks frequently, it is worth specif
 knitr::opts_chunk$set(connection = "con")
 ```
 
-## Translating dplyr Syntax to SQL Syntax
+## Translating dplyr Syntax to SQL Syntax and Vice Versa
 
-Another very helpful tool that bridges the gap between SQL and dplyr syntax is the `show_query` command. Personally, I found this tool incredibly valuable when learning SQL because of my background in R. Essentially, what this tool does is translate dplyr syntax into SQL syntax. Let's execute the syntax that we have been using so far but we will do it in dplyr so we can demonstrate the capacities of the `show_query` command.
+Another very helpful tool that bridges the gap between SQL and dplyr syntax is the `show_query` command. Personally, I found this tool incredibly valuable when learning SQL because of my background in R. Essentially, what this tool does is translate dplyr syntax into SQL syntax. In the opposite direction, through the `tidyquery` package, we also have the capability to the exact opposite and translate SQL syntax into dplyr syntax. Below demonstrates the functionality of these two commands for the same query. First, translating dplyr syntax to SQL syntax:
 
-```{r warning=FALSE}
+```{r}
 tbl(con, "mtcars") %>%
-  mutate(avg_mpg = round(mean(mpg))) %>%
   filter(am == 1) %>%
-  select(avg_mpg, cyl) %>%
   group_by(cyl) %>%
-  arrange(desc(avg_mpg)) %>%
+  summarise(avg_mpg = round(mean(mpg))) %>%
+  ungroup() %>%
+  arrange(dplyr::desc(avg_mpg)) %>%
   show_query()
 ```
 
-As you'll note from this output, the syntax provided from `show_query` is a bit different from the examples above, relying on an unnecessary subquery. **It does not include group_by? Why sub-query? CTEs?**
+Now, we will do the opposite
+
+```{r}
+show_dplyr(
+  "SELECT
+    ROUND(AVG(mpg)) AS avg_mpg,
+    cyl
+   FROM mtcars
+   WHERE am = 1
+   GROUP BY cyl
+   ORDER BY avg_mpg DESC;"
+)
+```
+
+Obviously, as one's knowledge in both SQL and R increases, the further capabilities of executing SQL in R can be explored. My hope is that this serves as a helpful introductory for those seeking to integrate data science tools together.
