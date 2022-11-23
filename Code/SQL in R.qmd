@@ -91,12 +91,14 @@ knitr::opts_chunk$set(connection = "con")
 
 Another very helpful tool that bridges the gap between SQL and dplyr syntax is the `show_query` command. Personally, I found this tool incredibly valuable when learning SQL because of my background in R. Essentially, what this tool does is translate dplyr syntax into SQL syntax. Let's execute the syntax that we have been using so far but we will do it in dplyr so we can demonstrate the capacities of the `show_query` command.
 
-```{r}
-query_3 <- mtcars %>%
-  select(avg_mpg = mean(mpg), cyl) %>%
+```{r warning=FALSE}
+tbl(con, "mtcars") %>%
+  mutate(avg_mpg = round(mean(mpg))) %>%
   filter(am == 1) %>%
+  select(avg_mpg, cyl) %>%
   group_by(cyl) %>%
-  order_by(avg_mpg)
-
-show_query(query_3)
+  arrange(desc(avg_mpg)) %>%
+  show_query()
 ```
+
+As you'll note from this output, the syntax provided from `show_query` is a bit different from the examples above, relying on an unnecessary subquery. **It does not include group_by? Why sub-query? CTEs?**
