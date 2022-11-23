@@ -63,6 +63,14 @@ query_1 <- dbGetQuery(con,
 
 tibble(query_1)
 ```
+```{r}
+# A tibble: 3 × 2
+  avg_mpg   cyl
+    <dbl> <dbl>
+1      28     4
+2      21     6
+3      15     8
+```
 
 In contrast, if you wanted to execute a query on a data frame object instead of pulling from a database, you can use `sqldf`.
 
