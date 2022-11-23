@@ -1,4 +1,4 @@
-# Executing-SQL-in-R
+# Executing SQL in R
 
 A promising push in the world of data analytics and data science is the push to homogenize the tools that are used into a common interface. Given my background in R, the prospect of working with SQL *completely inside of RStudio* has always been very appealing to me. This blog serves as a very *brief* and *introductory* review of how to execute SQL in R along with a couple of other related features. While this brief guide is not intended to serve as an introduction to SQL syntax, it is my intent that it can be shared with those who are new to SQL with R. Further, like all of my blog posts, there is a strong possibility I personally return to this at some point when I need a refresher on syntax and packages.
 
