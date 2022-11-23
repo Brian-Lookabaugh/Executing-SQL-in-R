@@ -1,28 +1,76 @@
 ---
 title: "Executing SQL in R"
 author: "Brian Lookabaugh"
-output: html_document
 ---
 
 ## Load Packages
 
-```{r}
+```{r warning=FALSE}
 library(dplyr) ## Data Manipulation in R
 library(sqldf) ## Running SQL Queries in R
 library(dbplyr) ## Translating dplyr Syntax to SQL Syntax
-library(DBI) ## Communication Between R and RDBMS
+library(DBI) ## Connecting to a Database
+library(odbc) ## Connecting to a Database
 ```
 
 ## Setting Up Databases
 
+In practice, executing SQL in R requires the connection to a pre-existing SQL database. For the purpose of this blog, however, we will just be using a temporary database stored in a local RStudio session.
+
+```{r}
+con <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
+```
+
+For practical reasons, the syntax above will not be sufficient. Each connection will look different, dependent on various circumstances (the type of relation database management system (RDBMS) being used, log-in information, etc.), so the following example is just that; an example using completely made-up information.
+
+```{r eval=FALSE}
+con <- dbConnect(odbc(),
+                 Driver = ,
+                 Server = ,
+                 Database = ,
+                 UID = ,
+                 PWD = ,
+                 Port = )
+```
+
+Returning to the database we created, it is empty and has no data stored in it. To keep things simple, we are going to load the `mtcars` data set. We first begin by loading the data into RStudio. The second line of code copies this data set into the local database that we created. Now that we have copied this data into the local database, we can remove the `mtcars` data set from the local environment.
+
+```{r}
+data("mtcars")
+
+dbWriteTable(conn = con,
+             name = "mtcars",
+             value = mtcars)
+
+rm(mtcars)
+```
+
 ## Running a SQL Query in R
+
+```{r}
+dbGetQuery(con,
+  'SELECT mpg, cyl
+   FROM mtcars
+   WHERE am = 1
+   GROUP BY cyl
+   ORDER BY mpg DESC;'
+)
+```
 
 ## Running a SQL Chunk in RMarkdown/Quarto
 
+```{sql connection=}
+
+```
+
 ## Running a SQL Query With dplyr Syntax
+
+```{r}
+
+```
 
 ## Translating dplyr Syntax to SQL Syntax
 
-## Saving Queries in R
+```{r}
 
-## A Tangible Example
+```
