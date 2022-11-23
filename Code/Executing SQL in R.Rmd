@@ -3,6 +3,8 @@ title: "Executing SQL in R"
 author: "Brian Lookabaugh"
 ---
 
+One value 
+
 ## Load Packages
 
 ```{r warning=FALSE}
@@ -47,13 +49,15 @@ rm(mtcars)
 
 ## Running a SQL Query in R
 
+Now that we have the `mtcars` data in our database, we can run a SQL query to retrieve information from this data. Using the `dbGetQuery` command, we can execute SQL syntax to return the desired information. Here, we are writing a query to return a table which tells us the average miles per gallon for automatic vehicles grouped by the number of cylinders the vehicle has and ordered by miles per gallon from the highest to lowest values.
+
 ```{r}
 dbGetQuery(con,
-  'SELECT mpg, cyl
+  'SELECT ROUND(AVG(mpg)) as avg_mpg, cyl
    FROM mtcars
    WHERE am = 1
    GROUP BY cyl
-   ORDER BY mpg DESC;'
+   ORDER BY avg_mpg DESC;'
 )
 ```
 
