@@ -40,9 +40,11 @@ Returning to the database we created, it is empty and has no data stored in it. 
 
 ```{r}
 data("mtcars")
+
 dbWriteTable(conn = con,
              name = "mtcars",
              value = mtcars)
+             
 rm(mtcars)
 ```
 
@@ -58,6 +60,7 @@ query_1 <- dbGetQuery(con,
    GROUP BY cyl
    ORDER BY avg_mpg DESC;'
 )
+
 tibble(query_1)
 ```
 
@@ -71,6 +74,7 @@ query_2 <- sqldf(
    GROUP BY cyl
    ORDER BY avg_mpg DESC;'
 )
+
 tibble(query_2)
 ```
 
