@@ -126,7 +126,7 @@ Note that if you are going to be using SQL chunks frequently, it is worth specif
 knitr::opts_chunk$set(connection = "con")
 ```
 
-## Translating dplyr Syntax to SQL Syntax and Vice Versa
+### Translating dplyr Syntax to SQL Syntax and Vice Versa
 
 Another very helpful tool that bridges the gap between SQL and dplyr syntax is the `show_query` command. Personally, I found this tool incredibly valuable when learning SQL because of my background in R. Essentially, what this tool does is translate dplyr syntax into SQL syntax. In the opposite direction, through the `tidyquery` package, we also have the capability to the exact opposite and translate SQL syntax into dplyr syntax. Below demonstrates the functionality of these two commands for the same query. First, translating dplyr syntax to SQL syntax:
 
