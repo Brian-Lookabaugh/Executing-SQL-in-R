@@ -20,13 +20,13 @@ pacman::p_load(
 
 In practice, executing SQL in R requires the connection to a pre-existing SQL database. For the purpose of this blog, however, we will just be using a temporary database stored in a local RStudio session. We will store this database as an object call `con`.
 
-```{r}
+``` r
 con <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
 ```
 
 For practical reasons, the syntax above will not be sufficient. Each connection will look different, dependent on various circumstances (the type of relation database management system (RDBMS) being used, log-in information, etc.), so the following example is just that; an example using completely made-up information. However, it does serve as a template for real information to be plugged into.
 
-```{r eval=FALSE}
+``` r
 con <- dbConnect(odbc(),
                  Driver = ,
                  Server = ,
@@ -38,7 +38,7 @@ con <- dbConnect(odbc(),
 
 Returning to the database we created, it is empty and has no data stored in it. To keep things simple, we are going to load the `mtcars` data set. We first begin by loading the data into RStudio. The second line of code copies this data set into the local database that we created. Now that we have copied this data into the local database, we can remove the `mtcars` data set from the local environment.
 
-```{r}
+``` r
 data("mtcars")
 
 dbWriteTable(conn = con,
@@ -52,7 +52,7 @@ rm(mtcars)
 
 Now that we have the `mtcars` data in our database, we can run a SQL query to retrieve information from this data. Using the `dbGetQuery` command, we can execute SQL syntax to return the desired information. Here, we are writing a query to return a table which tells us the average miles per gallon for automatic vehicles grouped by the number of cylinders the vehicle has and ordered by miles per gallon from the highest to lowest values.
 
-```{r}
+``` r
 query_1 <- dbGetQuery(con,
   'SELECT ROUND(AVG(mpg)) as avg_mpg, cyl
    FROM mtcars
@@ -73,7 +73,7 @@ tibble(query_1)
 
 In contrast, if you wanted to execute a query on a data frame object instead of pulling from a database, you can use `sqldf`.
 
-```{r}
+``` r
 query_2 <- sqldf(
   'SELECT ROUND(AVG(mpg)) as avg_mpg, cyl
    FROM mtcars
@@ -96,7 +96,7 @@ tibble(query_2)
 
 We can conveniently execute a SQL query in R without relying on a specific command like `dbGetQuery`. Using RMarkdown or Quarto, we can specify a SQL code chunk. Within the code chunk, you will need to specify the connection (`con` in our case) and, optionally, the object that the results of the query will be stored in. In the output below, you would begin the code chunk with `{sql, connection = con, output.var = "query_2"}`.
 
-```{sql, connection = con, output.var = "query_3"}
+``` sql
 SELECT
   ROUND(AVG(mpg)) AS avg_mpg,
   cyl
@@ -106,7 +106,7 @@ GROUP BY cyl
 ORDER BY avg_mpg DESC;
 ```
 
-```{r}
+``` r
 tibble(query_3)
 
 # A tibble: 3 × 2
@@ -119,7 +119,7 @@ tibble(query_3)
 
 Note that if you are going to be using SQL chunks frequently, it is worth specifying the default connection for SQL chunks as demonstrated below.
 
-```{r eval=FALSE}
+``` r
 knitr::opts_chunk$set(connection = "con")
 ```
 
@@ -127,7 +127,7 @@ knitr::opts_chunk$set(connection = "con")
 
 Another very helpful tool that bridges the gap between SQL and dplyr syntax is the `show_query` command. Personally, I found this tool incredibly valuable when learning SQL because of my background in R. Essentially, what this tool does is translate dplyr syntax into SQL syntax. In the opposite direction, through the `tidyquery` package, we also have the capability to the exact opposite and translate SQL syntax into dplyr syntax. Below demonstrates the functionality of these two commands for the same query. First, translating dplyr syntax to SQL syntax:
 
-```{r}
+``` r
 tbl(con, "mtcars") %>%
   filter(am == 1) %>%
   group_by(cyl) %>%
@@ -146,7 +146,7 @@ ORDER BY `avg_mpg` DESC
 
 Now, we will do the opposite
 
-```{r}
+``` r
 show_dplyr(
   "SELECT
     ROUND(AVG(mpg)) AS avg_mpg,
