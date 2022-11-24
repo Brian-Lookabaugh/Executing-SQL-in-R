@@ -62,8 +62,7 @@ query_1 <- dbGetQuery(con,
 )
 
 tibble(query_1)
-```
-```{r}
+
 # A tibble: 3 × 2
   avg_mpg   cyl
     <dbl> <dbl>
@@ -84,8 +83,7 @@ query_2 <- sqldf(
 )
 
 tibble(query_2)
-```
-```{r}
+
 # A tibble: 3 × 2
   avg_mpg   cyl
     <dbl> <dbl>
@@ -110,8 +108,7 @@ ORDER BY avg_mpg DESC;
 
 ```{r}
 tibble(query_3)
-```
-```{r}
+
 # A tibble: 3 × 2
   avg_mpg   cyl
     <dbl> <dbl>
@@ -138,8 +135,7 @@ tbl(con, "mtcars") %>%
   ungroup() %>%
   arrange(dplyr::desc(avg_mpg)) %>%
   show_query()
-```
-```{r}
+ 
 <SQL>
 SELECT `cyl`, ROUND(AVG(`mpg`), 0) AS `avg_mpg`
 FROM `mtcars`
@@ -160,8 +156,7 @@ show_dplyr(
    GROUP BY cyl
    ORDER BY avg_mpg DESC;"
 )
-```
-```{r}
+
 mtcars %>%
   filter(am == 1) %>%
   group_by(cyl) %>%
