@@ -4,7 +4,7 @@ A promising push in the world of data analytics and data science is the push to 
 
 To begin, we will load the packages that will be utilized in this blog.
 
-```{r warning=FALSE, message=FALSE}
+``` r
 pacman::p_load(
   "dplyr", ## Data Manipulation in R
   "sqldf", ## Running SQL Queries in R
