@@ -94,7 +94,7 @@ tibble(query_2)
 
 ### Running a SQL Chunk in RMarkdown/Quarto
 
-We can conveniently execute a SQL query in R without relying on a specific command like `dbGetQuery`. Using RMarkdown or Quarto, we can specify a SQL code chunk. Within the code chunk, you will need to specify the connection (`con` in our case) and, optionally, the object that the results of the query will be stored in. In the output below, you would begin the code chunk with `{sql, connection = con, output.var = "query_2"}`.
+We can conveniently execute a SQL query in R without relying on a specific command like `dbGetQuery`. Using RMarkdown or Quarto, we can specify a SQL code chunk. Within the code chunk, you will need to specify the connection (`con` in our case) and, optionally, the object that the results of the query will be stored in. In the output below, you would begin the code chunk with `{sql, connection = con, output.var = "query_3"}`.
 
 ``` sql
 SELECT
