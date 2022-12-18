@@ -64,11 +64,11 @@ query_1 <- dbGetQuery(con,
 tibble(query_1)
 
 # A tibble: 3 × 2
-  avg_mpg   cyl
-    <dbl> <dbl>
-1      28     4
-2      21     6
-3      15     8
+#   avg_mpg   cyl
+#     <dbl> <dbl>
+# 1      28     4
+# 2      21     6
+# 3      15     8
 ```
 
 In contrast, if you wanted to execute a query on a data frame object instead of pulling from a database, you can use `sqldf`.
@@ -85,11 +85,11 @@ query_2 <- sqldf(
 tibble(query_2)
 
 # A tibble: 3 × 2
-  avg_mpg   cyl
-    <dbl> <dbl>
-1      28     4
-2      21     6
-3      15     8
+#   avg_mpg   cyl
+#     <dbl> <dbl>
+# 1      28     4
+# 2      21     6
+# 3      15     8
 ```
 
 ### Running a SQL Chunk in RMarkdown/Quarto
@@ -110,11 +110,11 @@ ORDER BY avg_mpg DESC;
 tibble(query_3)
 
 # A tibble: 3 × 2
-  avg_mpg   cyl
-    <dbl> <dbl>
-1      28     4
-2      21     6
-3      15     8
+#   avg_mpg   cyl
+#     <dbl> <dbl>
+# 1      28     4
+# 2      21     6
+# 3      15     8
 ```
 
 Note that if you are going to be using SQL chunks frequently, it is worth specifying the default connection for SQL chunks as demonstrated below.
